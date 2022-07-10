@@ -29,7 +29,6 @@ hcr=0   #half circle right
 def pressed(key):
     global hcl
     global hcr
-    print('called')
     if hcl==0 and hcr==0 and key in halfCircle:
         current.add(key)
         if all(k in current for k in downLeft):
@@ -46,14 +45,12 @@ def pressed(key):
             time.sleep(speed)
             keyboard.release(right.char)
             hcl=0
-            print('half circle left\n')
     if hcr==1:
         current.add(key)
         if all(k in current for k in downRight):
             time.sleep(speed)
             keyboard.release(left.char)
             hcr=0
-            print('half circle right\n')
             
     if key in downUp:
         current.add(key)
