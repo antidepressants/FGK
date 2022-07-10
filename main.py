@@ -56,10 +56,6 @@ def pressed(key):
         current.add(key)
         if all(k in current for k in downUp):
             keyboard.release(down.char)
-    
-    if key==Key.esc:
-        pass
-        listener.stop()
 
 def released(key):
     try:
