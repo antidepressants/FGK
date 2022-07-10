@@ -17,7 +17,7 @@ halfCircle=[left,down,right]
 rightLeft=[right,left]
 downUp=[down,up]
 
-speed=0.015
+speed=0.012
 
 current=set()
 
@@ -25,19 +25,25 @@ current=set()
 
 hcl=0   #half circle left
 hcr=0   #half circle right
+crouch=0
+
 
 def pressed(key):
     global hcl
     global hcr
+    global crouch
+    crouch=(key==down)
     if hcl==0 and hcr==0 and key in halfCircle:
         current.add(key)
         if all(k in current for k in downLeft):
-            time.sleep(speed)
-            keyboard.release(left.char)
+            if crouch==1:
+                time.sleep(speed)
+                keyboard.release(left.char)
             hcr=1
         if all(k in current for k in downRight):
-            time.sleep(speed)
-            keyboard.release(right.char)
+            if crouch==1:
+                time.sleep(speed)
+                keyboard.release(right.char)
             hcl=1
     if hcl==1:
         current.add(key)
