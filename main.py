@@ -1,0 +1,90 @@
+import pynput
+import time
+from pynput.keyboard import Key, Controller, Listener
+
+kc=pynput.keyboard.KeyCode
+keyboard=Controller()
+
+left=kc.from_char('q')
+down=kc.from_char('w')
+right=kc.from_char('e')
+up=Key.space
+test=kc.from_char('k')
+
+downLeft=[down,left]
+downRight=[down,right]
+halfCircle=[left,down,right]
+rightLeft=[right,left]
+downUp=[down,up]
+
+speed=0.015
+
+current=set()
+
+#keyboard manipulation
+
+def tap(key,delay):
+    keyboard.press(key)
+    time.sleep(delay)
+    keyboard.release(key)
+    print('done')
+
+def hold(keys,delay):
+    for k in keys:
+        keyboard.press(k)
+    time.sleep(delay)
+    for k in keys:
+        keyboard.release(k)
+    print('done')
+
+#keyboard monitoring
+
+hcl=0   #half circle left
+hcr=0   #half circle right
+
+def pressed(key):
+    global hcl
+    global hcr
+    print('called')
+    if hcl==0 and hcr==0 and key in halfCircle:
+        current.add(key)
+        if all(k in current for k in downLeft):
+            time.sleep(speed)
+            keyboard.release(left.char)
+            hcr=1
+        if all(k in current for k in downRight):
+            time.sleep(speed)
+            keyboard.release(right.char)
+            hcl=1
+    if hcl==1:
+        current.add(key)
+        if all(k in current for k in downLeft):
+            time.sleep(speed)
+            keyboard.release(right.char)
+            hcl=0
+            print('half circle left\n')
+    if hcr==1:
+        current.add(key)
+        if all(k in current for k in downRight):
+            time.sleep(speed)
+            keyboard.release(left.char)
+            hcr=0
+            print('half circle right\n')
+            
+    if key in downUp:
+        current.add(key)
+        if all(k in current for k in downUp):
+            keyboard.release(down.char)
+    
+    if key==Key.esc:
+        pass
+        listener.stop()
+
+def released(key):
+    try:
+        current.remove(key)
+    except KeyError:
+        pass
+
+with Listener(on_press=pressed, on_release=released) as listener:
+    listener.join()
