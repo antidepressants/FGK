@@ -21,22 +21,6 @@ speed=0.015
 
 current=set()
 
-#keyboard manipulation
-
-def tap(key,delay):
-    keyboard.press(key)
-    time.sleep(delay)
-    keyboard.release(key)
-    print('done')
-
-def hold(keys,delay):
-    for k in keys:
-        keyboard.press(k)
-    time.sleep(delay)
-    for k in keys:
-        keyboard.release(k)
-    print('done')
-
 #keyboard monitoring
 
 hcl=0   #half circle left
